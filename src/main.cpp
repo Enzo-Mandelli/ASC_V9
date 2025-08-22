@@ -1,15 +1,28 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
-// Configurações da rede Wi-Fi
+#include <ESP32Servo.h>
+#include <Suspension.h>
+//======== Configurações da rede Wi-Fi ========
 const char* ssid = "e";
 const char* password = "uybt4536";
 
-// Endereço IP do servidor
+//======== Endereço IP do servidor ========
 const char* serverIP = "10.86.172.58"; // Substitua pelo IP do seu servidor
 const int serverPort = 12345;
-
 WiFiClient client;
+// ======== Servos ========
+Servo frontLeft;
+Servo frontRight;
+Servo rearLeft;
+Servo rearRight;
+
+Servo* ptrFrontLeft = &frontLeft;
+Servo* ptrFrontRight = &frontRight;
+Servo* ptrRearLeft = &rearLeft;
+Servo* ptrRearRight = &rearRight;
+Suspension susp(ptrFrontLeft, ptrFrontRight, ptrRearLeft, ptrRearRight);
+
 
 void setup() {
   Serial.begin(9600);
@@ -50,4 +63,29 @@ void loop() {
 
   // Desconectar após enviar a mensagem
   delay(5000); // Esperar 5 segundos antes de enviar outra mensagem
+
+  
+}
+
+void SetaMovimento(String message){
+  const char* ptr = message.c_str();
+  String itensSegmentados[4] = {"","","",""};
+  bool finished = true;
+  short index = 0;
+  while(finished){ //separa a String com todos os angulos um uma array com angulos isolados
+    if(*ptr == ';') {  //verifica se a mensagem chegou ao fim
+      finished = false;
+      continue; // caso tenha chegado para o loop 
+    }
+    if(*ptr != ',') {
+      itensSegmentados[index] = itensSegmentados[index] + *ptr; // caso o character não seja uma virgula soma a String de angulos individuais
+    }else{
+      index++;
+    }
+    ptr++; //percorre a array de char usando ponteiro
+  }
+  frontLeft.write(itensSegmentados[0].toInt());
+  frontRight.write(itensSegmentados[1].toInt());
+  rearLeft.write(itensSegmentados[2].toInt());
+  rearRight.write(itensSegmentados[3].toInt());
 }

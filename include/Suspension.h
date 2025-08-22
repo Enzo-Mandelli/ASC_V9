@@ -1,9 +1,6 @@
 #include <ESP32Servo.h>
 class Suspension{
-    public:
-        Suspension(Servo fr, Servo fl, Servo rr, Servo rl);
-
-        
+    public:        
         Suspension(Servo* ptr_ServoFL, Servo* ptr_ServoFR, Servo* ptr_ServoRL, Servo* ptr_ServoRR){
             servoFrontLeft = *ptr_ServoFL;
             servoFrontRight = *ptr_ServoFR;
