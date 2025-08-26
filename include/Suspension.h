@@ -1,11 +1,11 @@
 #include <ESP32Servo.h>
 class Suspension{
     public:        
-        Suspension(Servo* ptr_ServoFL, Servo* ptr_ServoFR, Servo* ptr_ServoRL, Servo* ptr_ServoRR){
-            servoFrontLeft = *ptr_ServoFL;
-            servoFrontRight = *ptr_ServoFR;
-            servoRearLeft = *ptr_ServoRL;
-            servoRearRight = *ptr_ServoRR;
+        Suspension(short servoFL, short servoFR, short servoRL, short servoRR){
+            frontLeftPin = servoFL;
+            frontRightPin = servoFR;
+            rearLeftPin = servoRL;
+            rearRightPin = servoRR;
         }
         void setPosInativo();
         void setPosAtivo();
@@ -21,8 +21,9 @@ class Suspension{
         int min;
         void setZero(int zero);
         void setMax(int max);
-        Servo servoFrontLeft;
-        Servo servoFrontRight;
-        Servo servoRearRight;
-        Servo servoRearLeft;
+        void move(short pin, int angulo);
+        short frontLeftPin;
+        short frontRightPin;
+        short rearLeftPin;
+        short rearRightPin;
 };

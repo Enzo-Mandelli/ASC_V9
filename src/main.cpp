@@ -3,28 +3,27 @@
 #include <WiFiClient.h>
 #include <ESP32Servo.h>
 #include <Suspension.h>
+#include <Pins.h>
 //======== Configurações da rede Wi-Fi ========
 const char* ssid = "e";
 const char* password = "uybt4536";
 
 //======== Endereço IP do servidor ========
-const char* serverIP = "10.86.172.58"; // Substitua pelo IP do seu servidor
+const char* serverIP = "10.189.197.58"; // Substitua pelo IP do seu servidor
 const int serverPort = 12345;
 WiFiClient client;
 // ======== Servos ========
-Servo frontLeft;
-Servo frontRight;
-Servo rearLeft;
-Servo rearRight;
+int pin = 13;
 
-Servo* ptrFrontLeft = &frontLeft;
-Servo* ptrFrontRight = &frontRight;
-Servo* ptrRearLeft = &rearLeft;
-Servo* ptrRearRight = &rearRight;
-Suspension susp(ptrFrontLeft, ptrFrontRight, ptrRearLeft, ptrRearRight);
-
+Suspension susp(pFrontLeft, pFrontRight, pRearLeft, pRearRight);
+void SetaMovimento(String message);
 
 void setup() {
+  pinMode(pFrontLeft, OUTPUT);
+  pinMode(pFrontRight, OUTPUT);
+  pinMode(pRearLeft, OUTPUT);
+  pinMode(pRearLeft, OUTPUT);
+  susp.setPosInativo();
   Serial.begin(9600);
   // Conectar ao Wi-Fi
   WiFi.begin(ssid, password);
@@ -59,12 +58,10 @@ void loop() {
     String response = client.readStringUntil('\n');
     Serial.print("Response from server: ");
     Serial.println(response);
+    SetaMovimento(response);
   }
-
+  delay(1000);
   // Desconectar após enviar a mensagem
-  delay(5000); // Esperar 5 segundos antes de enviar outra mensagem
-
-  
 }
 
 void SetaMovimento(String message){
@@ -84,8 +81,8 @@ void SetaMovimento(String message){
     }
     ptr++; //percorre a array de char usando ponteiro
   }
-  frontLeft.write(itensSegmentados[0].toInt());
-  frontRight.write(itensSegmentados[1].toInt());
-  rearLeft.write(itensSegmentados[2].toInt());
-  rearRight.write(itensSegmentados[3].toInt());
+  susp.move(pFrontRight, itensSegmentados[0].toInt());
+  susp.move(pFrontLeft, itensSegmentados[1].toInt());
+  susp.move(pRearRight, itensSegmentados[2].toInt());
+  susp.move(pRearLeft, itensSegmentados[3].toInt());
 }
