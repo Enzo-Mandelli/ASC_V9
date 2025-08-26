@@ -22,7 +22,7 @@ void setup() {
   pinMode(pFrontLeft, OUTPUT);
   pinMode(pFrontRight, OUTPUT);
   pinMode(pRearLeft, OUTPUT);
-  pinMode(pRearLeft, OUTPUT);
+  pinMode(pRearRight, OUTPUT);
   susp.setPosInativo();
   Serial.begin(9600);
   // Conectar ao Wi-Fi
