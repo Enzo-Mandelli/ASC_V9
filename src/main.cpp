@@ -9,7 +9,7 @@ const char* ssid = "e";
 const char* password = "uybt4536";
 
 //======== Endereço IP do servidor ========
-const char* serverIP = "10.189.197.58"; // Substitua pelo IP do seu servidor
+const char* serverIP = "10.240.89.59"; // Substitua pelo IP do seu servidor
 const int serverPort = 12345;
 WiFiClient client;
 // ======== Servos ========
@@ -38,6 +38,7 @@ void setup() {
 
 void loop() {
   // Conectar ao servidor
+  susp.keepLastValue();
   if (!client.connected()) {
     if (client.connect(serverIP, serverPort)) {
       Serial.println("Connected to server");
@@ -60,7 +61,6 @@ void loop() {
     Serial.println(response);
     SetaMovimento(response);
   }
-  delay(1000);
   // Desconectar após enviar a mensagem
 }
 

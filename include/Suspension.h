@@ -26,4 +26,5 @@ class Suspension{
         short frontRightPin;
         short rearLeftPin;
         short rearRightPin;
+        void keepLastValue();
 };

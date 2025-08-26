@@ -1,5 +1,5 @@
  
-short pFrontLeft = 13;
-short pFrontRight = 12;
-short pRearLeft = 14;
-short pRearRight = 27;
+const short pFrontLeft = 13;
+const short pFrontRight = 12;
+const short pRearLeft = 14;
+const short pRearRight = 27;

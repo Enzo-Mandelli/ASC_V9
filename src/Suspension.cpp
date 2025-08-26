@@ -1,5 +1,5 @@
-#include "Suspension.h"
-
+#include <Suspension.h>
+#include <Pins.h>
 //================================================================================
 // DEFINIÇÃO DAS VARIÁVEIS GLOBAIS
 //================================================================================
@@ -9,10 +9,12 @@ int lowerAngle = 0;   // Valor mínimo do angulo (geralmente 0)
 int biggestAngle = 180; // Valor máximo do angulo (geralmente 180)
 int restAngle = 0;    // Posição de repouso
 int activeAngle = 90; // Posição ativa (90 graus como exemplo)
-int lastValueFR = 0;
-int lastValueFL = 0;
-int lastValueRR = 0;
-int lastValueRL = 0;
+static int lastValueFR = 0;
+static int lastValueFL = 0;
+static int lastValueRR = 0;
+static int lastValueRL = 0;
+int lastValueSteeringL = 0;
+int lastValueSteeringR = 0;
 
 
 //================================================================================
@@ -33,6 +35,21 @@ void Suspension :: move(short pin, int angulo) {
     digitalWrite(pin, HIGH);
     delayMicroseconds(pulso);
     digitalWrite(pin, LOW);
+    switch(pin){
+        case pFrontLeft:
+            lastValueFL = angulo;
+            break;
+        case pFrontRight:
+            lastValueFR = angulo;
+            break;
+        case pRearLeft:
+            lastValueRL = angulo;
+            break;
+        case pRearRight:
+            lastValueRR = angulo;
+            break;
+    }
+    delay(50);
 }
 
 void Suspension :: keepLastValue(){
@@ -62,6 +79,10 @@ void Suspension::setPosInativo() {
     move(frontRightPin, restAngle);
     move(rearLeftPin, restAngle);
     move(rearRightPin, restAngle);
+    lastValueFL = restAngle;
+    lastValueFR = restAngle;
+    lastValueRL = restAngle;
+    lastValueRR = restAngle;
 }
 
 // Move todos os servos para a posicao ativa
@@ -70,12 +91,18 @@ void Suspension::setPosAtivo() {
     move(frontRightPin, activeAngle);
     move(rearLeftPin, activeAngle);
     move(rearRightPin, activeAngle);
+    lastValueFL = activeAngle;
+    lastValueFR = activeAngle;
+    lastValueRL = activeAngle;
+    lastValueRR = activeAngle;
 }
 
 // Move a parte traseira
 void Suspension::moveBackSide(int angulo) {
     move(rearLeftPin, angulo);
     move(rearRightPin, angulo);
+    lastValueRL = angulo;
+    lastValueRR = angulo;
 }
 
 // Move a parte frontal
@@ -90,12 +117,16 @@ void Suspension::moveFrontSide(int angulo) {
 void Suspension::moveLeftSide(int angulo) {
     move(frontLeftPin, angulo);
     move(rearLeftPin, angulo);
+    lastValueRL = angulo;
+    lastValueFL = angulo;
 }
 
 // Move o lado direito
 void Suspension::moveRightSide(int angulo) {
     move(frontRightPin, angulo);
     move(rearRightPin, angulo);
+    lastValueRR = angulo;
+    lastValueFR = angulo;
 }
 
 
