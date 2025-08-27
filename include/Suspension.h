@@ -1,3 +1,6 @@
+#ifndef SUSPENSION_H
+#define SUSPENSION_H
+
 #include <ESP32Servo.h>
 class Suspension{
     public:        
@@ -28,3 +31,5 @@ class Suspension{
         short rearRightPin;
         void keepLastValue();
 };
+
+#endif
