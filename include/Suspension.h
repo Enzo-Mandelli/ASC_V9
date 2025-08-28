@@ -1,7 +1,8 @@
 #ifndef SUSPENSION_H
 #define SUSPENSION_H
-
-#include <ESP32Servo.h>
+#include <Arduino.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 class Suspension{
     public:        
         Suspension(short servoFL, short servoFR, short servoRL, short servoRR){
@@ -10,6 +11,9 @@ class Suspension{
             rearLeftPin = servoRL;
             rearRightPin = servoRR;
         }
+        void start();
+        static void threadEntry(void* parameter);
+        void run();
         void setPosInativo();
         void setPosAtivo();
         void moveLeftSide(int angulo);
