@@ -12,18 +12,11 @@ const char* password = "uybt4536";
 const char* serverIP = "10.240.89.59"; // Substitua pelo IP do seu servidor
 const int serverPort = 12345;
 WiFiClient client;
-// ======== Servos ========
-int pin = 13;
-
 Suspension susp(pFrontLeft, pFrontRight, pRearLeft, pRearRight);
+
 void SetaMovimento(String message);
 
 void setup() {
-  pinMode(pFrontLeft, OUTPUT);
-  pinMode(pFrontRight, OUTPUT);
-  pinMode(pRearLeft, OUTPUT);
-  pinMode(pRearRight, OUTPUT);
-  susp.setPosInativo();
   Serial.begin(9600);
   // Conectar ao Wi-Fi
   WiFi.begin(ssid, password);
@@ -38,13 +31,12 @@ void setup() {
 
 void loop() {
   // Conectar ao servidor
-  susp.keepLastValue();
   if (!client.connected()) {
     if (client.connect(serverIP, serverPort)) {
       Serial.println("Connected to server");
     } else {
       Serial.println("Connection failed");
-      delay(5000); // Esperar 5 segundos antes de tentar novamente
+      delay(5000);
       return;
     }
   }
@@ -61,7 +53,7 @@ void loop() {
     Serial.println(response);
     SetaMovimento(response);
   }
-  // Desconectar após enviar a mensagem
+
 }
 
 void SetaMovimento(String message){

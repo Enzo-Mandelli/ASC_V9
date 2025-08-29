@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+#include <ESP32Servo.h>
 class Suspension{
     public:        
         Suspension(short servoFL, short servoFR, short servoRL, short servoRR){
@@ -10,6 +11,10 @@ class Suspension{
             frontRightPin = servoFR;
             rearLeftPin = servoRL;
             rearRightPin = servoRR;
+            fl.attach(servoFL);
+            fr.attach(servoFR);
+            rl.attach(servoRL);
+            rr.attach(servoRR);
         }
         void start();
         static void threadEntry(void* parameter);
@@ -34,6 +39,10 @@ class Suspension{
         short rearLeftPin;
         short rearRightPin;
         void keepLastValue();
+        Servo fr;
+        Servo fl;
+        Servo rr;
+        Servo rl;
 };
 
 #endif
